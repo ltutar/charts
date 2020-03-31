@@ -1,4 +1,4 @@
-rancher_max_version: 2.3.5
+rancher_min_version: 2.3.5
 categories:
 - application
 
