@@ -11,7 +11,7 @@ metadata:
     cattle.io/creator: norman
     workload.user.cattle.io/workloadselector: deployment-default-hello
   name: hello
-  namespace: default
+  namespace: hello-world
   resourceVersion: "15857"
   selfLink: /apis/apps/v1/namespaces/default/deployments/hello
   uid: fbda7434-cb45-43a0-9546-e55553548ff5
