@@ -1,3 +1,9 @@
-# Default values for hello-world.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+image:
+  repository: reyesoft/hello-world
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: hello-world
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 8005
