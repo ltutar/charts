@@ -1,55 +1,82 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hello-world.fullname" . }}
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    field.cattle.io/creatorId: user-xv4tn
+    field.cattle.io/publicEndpoints: '[{"addresses":["172.22.101.111"],"port":32076,"protocol":"TCP","serviceName":"default:hello-nodeport","allNodes":true}]'
+  creationTimestamp: "2020-03-31T20:38:58Z"
+  generation: 2
   labels:
-    {{- include "hello-world.labels" . | nindent 4 }}
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-default-hello
+  name: hello
+  namespace: default
+  resourceVersion: "15857"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/hello
+  uid: fbda7434-cb45-43a0-9546-e55553548ff5
 spec:
-  replicas: {{ .Values.replicaCount }}
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      {{- include "hello-world.selectorLabels" . | nindent 6 }}
+      workload.user.cattle.io/workloadselector: deployment-default-hello
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
+      annotations:
+        cattle.io/timestamp: "2020-03-31T20:38:58Z"
+        field.cattle.io/ports: '[[{"containerPort":80,"dnsName":"hello-nodeport","hostPort":0,"kind":"NodePort","name":"hello","protocol":"TCP","sourcePort":0}]]'
+      creationTimestamp: null
       labels:
-        {{- include "hello-world.selectorLabels" . | nindent 8 }}
+        workload.user.cattle.io/workloadselector: deployment-default-hello
     spec:
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-      serviceAccountName: {{ include "hello-world.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+      - image: rancher/hello-world
+        imagePullPolicy: Always
+        name: hello
+        ports:
+        - containerPort: 80
+          name: hello
+          protocol: TCP
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {}
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+      dnsConfig: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-03-31T20:39:08Z"
+    lastUpdateTime: "2020-03-31T20:39:08Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2020-03-31T20:38:59Z"
+    lastUpdateTime: "2020-03-31T20:39:08Z"
+    message: ReplicaSet "hello-cf7479564" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
