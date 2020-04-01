@@ -2,22 +2,27 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    field.cattle.io/creatorId: user-fjtfd
-    field.cattle.io/ingressState: '{"aGVsbG8td29ybGQvaGVsbG8td29ybGQveGlwLmlvLy84MA==":"deployment:hello-world:hello-world"}'
-    field.cattle.io/publicEndpoints: '[{"addresses":["172.22.101.111"],"port":80,"protocol":"HTTP","serviceName":"hello-world:ingress-6accc3f64f831ecf197448c0001fe50f","ingressName":"hello-world:hello-world","hostname":"hello-world.hello-world.172.22.101.111.xip.io","allNodes":true}]'
-  creationTimestamp: null
-  generation: 1
+    field.cattle.io/creatorId: user-xv4tn
+    field.cattle.io/ingressState: '{"aGVsbG8vZGVmYXVsdC94aXAuaW8vLzgw":"deployment:default:hello"}'
+    field.cattle.io/publicEndpoints: '[{"addresses":["172.22.101.111"],"port":80,"protocol":"HTTP","serviceName":"default:ingress-d1e1a394f61c108633c4bd37aedde757","ingressName":"default:hello","hostname":"hello.default.172.22.101.111.xip.io","allNodes":true}]'
+  creationTimestamp: "2020-03-31T20:44:21Z"
+  generation: 2
   labels:
     cattle.io/creator: norman
-  name: hello-world
-  selfLink: /apis/extensions/v1beta1/namespaces/hello-world/ingresses/hello-world
+  name: hello
+  namespace: default
+  resourceVersion: "16670"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/ingresses/hello
+  uid: 986a6183-ddd0-460e-9673-9ef46e16f364
 spec:
   rules:
-  - host: hello-world.hello-world.172.22.101.111.xip.io
+  - host: hello.default.172.22.101.111.xip.io
     http:
       paths:
       - backend:
-          serviceName: ingress-6accc3f64f831ecf197448c0001fe50f
+          serviceName: ingress-d1e1a394f61c108633c4bd37aedde757
           servicePort: 80
 status:
-  loadBalancer: {}
+  loadBalancer:
+    ingress:
+    - ip: 172.22.101.111
