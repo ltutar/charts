@@ -42,7 +42,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: hello.default.172.22.101.111.xip.io 
+    - host: chart-example.local 
       paths: []
   tls: []
   #  - secretName: chart-example-tls
